@@ -1,61 +1,42 @@
-import os
+import math
 
-TODO_FILE = "todo_list.txt"
+def add_vectors(vec1, vec2):
+    return [x + y for x, y in zip(vec1, vec2)]
 
-def load_tasks():
-    tasks = []
-    if os.path.exists(TODO_FILE):
-        with open(TODO_FILE, "r") as file:
-            tasks = [task.strip() for task in file.readlines()]
-    return tasks
+def subtract_vectors(vec1, vec2):
+    return [x - y for x, y in zip(vec1, vec2)]
 
-def save_tasks(tasks):
-    with open(TODO_FILE, "w") as file:
-        for task in tasks:
-            file.write(task + "\n")
+def scalar_multiply(vector, scalar):
+    return [x * scalar for x in vector]
 
-def add_task(task):
-    tasks = load_tasks()
-    tasks.append(task)
-    save_tasks(tasks)
-    print("Задача добавлена.")
+def dot_product(vec1, vec2):
+    return sum(x * y for x, y in zip(vec1, vec2))
 
-def remove_task(task_index):
-    tasks = load_tasks()
-    if task_index < 1 or task_index > len(tasks):
-        print("Неверный номер задачи.")
-        return
-    removed_task = tasks.pop(task_index - 1)
-    save_tasks(tasks)
-    print(f"Задача '{removed_task}' удалена.")
+def cross_product(vec1, vec2):
+    if len(vec1) != 3 or len(vec2) != 3:
+        raise ValueError("Cross product is defined only for 3-dimensional vectors")
+    return [
+        vec1[1] * vec2[2] - vec1[2] * vec2[1],
+        vec1[2] * vec2[0] - vec1[0] * vec2[2],
+        vec1[0] * vec2[1] - vec1[1] * vec2[0]
+    ]
 
-def show_tasks():
-    tasks = load_tasks()
-    if not tasks:
-        print("Список задач пуст.")
-    else:
-        print("Список задач:")
-        for index, task in enumerate(tasks, start=1):
-            print(f"{index}. {task}")
+def multiply_by_constant(vector, constant):
+    return [x * constant for x in vector]
 
-while True:
-    print("\nМеню:")
-    print("1. Добавить задачу")
-    print("2. Удалить задачу")
-    print("3. Показать все задачи")
-    print("4. Выйти")
-    
-    choice = input("Выберите действие: ")
+def divide_by_constant(vector, constant):
+    return [x / constant for x in vector]
 
-    if choice == "1":
-        task = input("Введите новую задачу: ")
-        add_task(task)
-    elif choice == "2":
-        task_index = int(input("Введите номер задачи для удаления: "))
-        remove_task(task_index)
-    elif choice == "3":
-        show_tasks()
-    elif choice == "4":
-        break
-    else:
-        print("Неверный ввод. Попробуйте снова.")
+
+from vector_operations import *
+
+vector1 = [1, 2, 3]
+vector2 = [4, 5, 6]
+
+print("Addition:", add_vectors(vector1, vector2))
+print("Subtraction:", subtract_vectors(vector1, vector2))
+print("Scalar multiplication:", scalar_multiply(vector1, 2))
+print("Dot product:", dot_product(vector1, vector2))
+print("Cross product:", cross_product(vector1, vector2))
+print("Multiplication by constant:", multiply_by_constant(vector1, 3))
+print("Division by constant:", divide_by_constant(vector2, 2))
